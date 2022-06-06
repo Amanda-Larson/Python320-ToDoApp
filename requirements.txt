@@ -1,0 +1,4 @@
+PySnooper
+loguru
+peewee
+setuptools
