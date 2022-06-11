@@ -2,3 +2,5 @@ PySnooper
 loguru
 peewee
 setuptools
+typer
+rich
