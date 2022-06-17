@@ -3,7 +3,6 @@ created with the help of the youtube video: https://youtu.be/ynd67UwG_cI"""
 
 import typer
 from rich.console import Console
-# from rich.table import Table
 from tasks import Tasks as t
 
 console = Console()

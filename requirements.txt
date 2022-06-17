@@ -1,6 +1,9 @@
 PySnooper
 loguru
-peewee
 setuptools
 typer
 rich
+sqlalchemy
+flask_restful
+flask
+peewee
