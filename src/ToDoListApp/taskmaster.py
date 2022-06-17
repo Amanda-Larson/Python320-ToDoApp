@@ -1,6 +1,7 @@
 """new file to experiment with creating a CLI app with typer, rich, and sqlite3
 created with the help of the youtube video: https://youtu.be/ynd67UwG_cI"""
 
+import requests
 import typer
 from rich.console import Console
 from tasks import Tasks as t
@@ -64,6 +65,13 @@ def list_completed(choice: str = typer.Option(default=None,
                                               prompt="Enter 1 for Ascending or 2 for Descending",
                                               prompt_required=True)):
     t.list_completed(choice)
+
+
+@app.command(short_help="get jsonified data from URL")
+def get_data(endpoint: str = typer.Option(default=None, prompt="Enter url end: ")):
+    url = f'http://127.0.0.1:5002/{endpoint}'
+    resp = requests.get(url)
+    typer.secho(resp.content)
 
 
 if __name__ == "__main__":

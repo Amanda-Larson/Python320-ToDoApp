@@ -10,7 +10,8 @@ class Tasks(Resource):
     def get(self):
         conn = db_connect.connect()
         query = conn.execute("select * from Tasks")
-        result = {"Tasks": [i[1] for i in query.cursor.fetchall()]}
+        # result = {"Tasks": [i[1] for i in query.cursor.fetchall()]}
+        result = {"data": [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
         conn.close()
         return jsonify(result)
 
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     app = Flask(__name__)
 
     api = Api(app)
-    api.add_resource(Tasks, "/tasks")  # Route_1
+    api.add_resource(Tasks, "/all")  # Route_1
 
     app.run(port=5002)
 
