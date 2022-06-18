@@ -69,8 +69,10 @@ class Tasks(BaseModel):
                                     due_date=date_obj, priority=priority, complete_date=complete_date)
 
             new_task.save()
+            return True
         except pw.IntegrityError as error:
-            logger.exception(error)
+            # logger.exception(error)
+            return False
 
     @staticmethod
     def calc_priority(due_date):
@@ -99,7 +101,7 @@ class Tasks(BaseModel):
             print("Error: must be in MM/DD/YYYY format, please try again.")
 
     @staticmethod
-    @pysnooper.snoop()
+    # @pysnooper.snoop()
     def normalize_date(due_date):
         new_date = '-'.join(str.zfill(elem, 2) for elem in due_date.split('/'))
         # date_obj = datetime.datetime.strptime(new_date, '%m-%d-%Y')
