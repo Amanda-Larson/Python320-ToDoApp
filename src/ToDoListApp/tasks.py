@@ -30,7 +30,7 @@ class BaseModel(pw.Model):
 class Tasks(BaseModel):
     """Contains a collection of tasks"""
 
-    task_id = pw.CharField(primary_key=True, max_length=14)
+    task_id = pw.CharField(primary_key=True, max_length=17)
     task_nm = pw.CharField(max_length=30, unique=True,
                            constraints=[pw.Check("LENGTH(task_nm) < 30")])
     task_desc = pw.CharField(max_length=100,
@@ -56,7 +56,7 @@ class Tasks(BaseModel):
     @staticmethod
     def add_task(task_nm, task_desc, due_date):
         # create task id
-        task_id = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        task_id = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')[:-3]
         # create start date as today
         start_date = datetime.datetime.now().strftime('%m-%d-%Y')
         # normalize due_date
@@ -71,7 +71,7 @@ class Tasks(BaseModel):
             new_task.save()
             return True
         except pw.IntegrityError as error:
-            # logger.exception(error)
+            logger.info(error)
             return False
 
     @staticmethod
@@ -107,10 +107,6 @@ class Tasks(BaseModel):
         # date_obj = datetime.datetime.strptime(new_date, '%m-%d-%Y')
         return new_date
 
-
-    @staticmethod
-    def update_task():
-        pass
 
     @staticmethod
     def task_by_number(order: str):
@@ -205,16 +201,21 @@ class Tasks(BaseModel):
     @staticmethod
     def delete_task(task_name):
         """Deletes an existing task"""
-        del_task = Tasks.get(Tasks.task_nm == task_name)
-        DeletedTasks.create(task_id=del_task.task_id,
-                            task_nm=del_task.task_nm,
-                            task_desc=del_task.task_desc,
-                            start_date=del_task.start_date,
-                            due_date=del_task.due_date,
-                            priority=del_task.priority,
-                            status=del_task.status,
-                            complete_date=del_task.complete_date)
-        del_task.delete_instance()
+        try:
+            del_task = Tasks.get(Tasks.task_nm == task_name)
+            DeletedTasks.create(task_id=del_task.task_id,
+                                task_nm=del_task.task_nm,
+                                task_desc=del_task.task_desc,
+                                start_date=del_task.start_date,
+                                due_date=del_task.due_date,
+                                priority=del_task.priority,
+                                status=del_task.status,
+                                complete_date=del_task.complete_date)
+            del_task.delete_instance()
+            return True
+        except pw.DoesNotExist as error:
+            logger.info(error)
+            return False
 
     @staticmethod
     def generate_report(table):

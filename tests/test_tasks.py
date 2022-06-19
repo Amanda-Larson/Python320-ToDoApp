@@ -37,54 +37,26 @@ class TestTasks(TestCase):
         task_nm = 'setup task'
         task_desc = 'setup task description'
         due_date = '06/25/2022'
-        self.assertEqual(Tasks.add_task(task_nm, task_desc, due_date), True)
+        self.assertTrue(Tasks.add_task(task_nm, task_desc, due_date))
 
     def test_add_task(self):
-        task_nm = 'sample tasks'
+        task_nm = 'anything task'
         task_desc = 'sample task description'
         due_date = '06/29/2022'
-        self.assertEqual(Tasks.add_task(task_nm, task_desc, due_date), True)
-        # self.assertRaises(pw.IntegrityError)
+        self.assertTrue(Tasks.add_task(task_nm, task_desc, due_date))
 
     def test_add_task_duplicated(self):
-        task_nm = 'sample tasks'
-        task_desc = 'sample task description'
-        due_date = '06/29/2022'
-        self.assertEqual(Tasks.add_task(task_nm, task_desc, due_date), False)
-
-    def test_modify_task(self):
-        user_id = 'ldconejo79'
-        user_name = 'Elisa'
-        user_last_name = 'Cornejo'
-        user_email = 'elisa.conejo@conejo.com'
-        self.assertEqual(self.user_collection.modify_user(user_id, user_email, user_name, user_last_name), True)
-
-    def test_modify_user_not_found(self):
-        user_id = 'ldconejo80'
-        user_name = 'Elisa'
-        user_last_name = 'Cornejo'
-        user_email = 'elisa.conejo@conejo.com'
-        self.assertEqual(self.user_collection.modify_user(user_id, user_email, user_name, user_last_name), False)
-
-    def test_search_user(self):
-        user_id = 'ldconejo79'
-        user_name = 'Luis'
-        user_last_name = 'Conejo'
-        user_email = 'luisconejo@conejo.com'
-        result = self.user_collection.search_user(user_id)
-        self.assertEqual(result.user_id, user_id)
-        self.assertEqual(result.user_name, user_name)
-        self.assertEqual(result.user_last_name, user_last_name)
-        self.assertEqual(result.user_email, user_email)
-
-    def test_search_user_not_found(self):
-        user_id = 'ldconejo80'
-        result = self.user_collection.search_user(user_id)
-        self.assertEqual(result, None)
+        task_nm = 'setup task'
+        task_desc = 'setup task description'
+        due_date = '06/25/2022'
+        dup = Tasks.add_task(task_nm, task_desc, due_date)
+        self.assertFalse(dup)
+        # self.assertRaises(pw.IntegrityError)
 
     def test_delete_user(self):
-        user_id = 'ldconejo79'
-        self.assertEqual(self.user_collection.delete_user(user_id), True)
+        task_name = 'setup task'
+        self.assertEqual(Tasks.delete_task(task_name), True)
+
 
     def tearDown(self):
         database = SqliteDatabase(':memory:')

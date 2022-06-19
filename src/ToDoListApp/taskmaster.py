@@ -4,7 +4,7 @@ created with the help of the youtube video: https://youtu.be/ynd67UwG_cI"""
 import requests
 import typer
 from rich.console import Console
-from tasks import Tasks as t
+from src.ToDoListApp.tasks import Tasks as t
 
 console = Console()
 
@@ -14,7 +14,7 @@ app = typer.Typer()
 @app.command(short_help="Add a task to the to-do list")
 def add(task_nm: str, task_desc: str, due_date: str):
     t.add_task(task_nm, task_desc, due_date)
-    typer.secho(f"Adding, '{task_nm}'to the list.", fg=typer.colors.BRIGHT_CYAN)
+    typer.secho(f"Adding {task_nm} to the list.", fg=typer.colors.BRIGHT_CYAN)
 
 
 # @app.command(short_help="Updates a task in the task database")
@@ -77,4 +77,4 @@ def get_data(endpoint: str = typer.Option(default=None, prompt="Enter url end: "
 if __name__ == "__main__":
     t.db_connect()
     app()
-    print('got to here')
+
